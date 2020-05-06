@@ -3,18 +3,18 @@
 Current Release: v0.1 (06.05.2020)
 
 # Foreword!
-This is my first program, if you have ideas how to improve it, write to me!  
+This is my first program, if you have any idea about how to improve it or you find bug, please contact me!  
 https://t.me/WiIIson
 
 # Overview
-This program made for automatical process fuzzing of parameters in big requests. The program finds changes in the length of the response when fuzzing and reports about it. For explotation this programm you need Python 3.
+This program is made for parameters fuzzing automation in big requests. The program finds changes in the response's length during fuzzing and informs the user about it. The script runs Python 3.
 
 # Operating Systems supported
 - Windows XP/7/8/10
 - GNU/Linux
 - MacOSX
 
-# What can tool?
+# What does the tool can?
 - Fuzzing POST parameters
 - Fuzzing POST parameters in JSON format
 - Fuzzing GET parameters
@@ -28,7 +28,7 @@ This program made for automatical process fuzzing of parameters in big requests.
 - You no longer need to think about headers and cookies, just send full request from Burp Suite to the Fuzzer and the program will parse the request itself
 - The program determines the data type of each parameter (String, Integer, Float, Boolean) from the request (the type of payload depends on this)
 
-# How it use?
+# How to use it?
 The program sends requests with different payloads and displays a message if the length of the response with the sent payload has changed. You must pay attention to the length of the response and the status of the response.
 
   --url&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag to send the url of the address  
