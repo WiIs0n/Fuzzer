@@ -92,3 +92,9 @@ Payload: <b>%0A%0D</b>
 Template: key=EMPTYvalue<b>%0A%0D</b>  
 Result: param1=1234  ->  param1=<b>%0A%0D</b>  
 
+# In the future
+- Add fuzzing for headers  
+- Add fizzing for cookies  
+- Add random user agent  
+- Add fuzzing of one parameter from a set, using a custom dictionary without template  
+- The analyzer of the response, which will search anomalies while fuzzing, for example sql errors and so on  
