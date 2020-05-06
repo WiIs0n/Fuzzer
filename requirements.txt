@@ -1,0 +1,4 @@
+requests
+colored
+pysocks
+argparse
