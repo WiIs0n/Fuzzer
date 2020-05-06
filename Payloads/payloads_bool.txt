@@ -1,0 +1,4 @@
+key=EMPTYvalueFalse
+key=EMPTYvalueTrue
+key=EMPTYvalue0
+key=EMPTYvalue1

@@ -1,0 +1,8 @@
+key=-value
+key=99999999999999999999999999999value
+key=0.value
+key[]=value
+key=value\
+key=value'
+key=value"
+key=EMPTYvalue%00
