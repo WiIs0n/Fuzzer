@@ -25,7 +25,15 @@ def h_and_c(headers_and_cookies):
             headers[line[0].lstrip().rstrip()] = line[1].lstrip().rstrip()
 
 
-def data_parser(path_to_file, url_form_user, threads, json_flag, proxy):
+def data_parser(path_to_file, url_form_user, threads, proxy, payloads_file):
+    if payloads_file == None:
+        function = fuzzer
+    if payloads_file != None:
+        check_file(payloads_file, "--payloads")
+        function = fuzzer_user_payloads
+
+    check_file(path_to_file, "--file")
+
     try:
         with open(path_to_file, 'r') as f:
             file_lines = f.read().strip().splitlines()
@@ -43,6 +51,16 @@ def data_parser(path_to_file, url_form_user, threads, json_flag, proxy):
     method = hat_of_request[0].strip()
     full_url = url_form_user + hat_of_request[1].strip()
 
+    if method == "POST":
+        check_json = headers_and_cookies[len(headers_and_cookies) - 1].strip()
+
+        if check_json.strip()[0] == "{" and check_json.strip()[int(len(check_json.strip())-1)] == "}":
+            json_flag = True
+        else:
+            json_flag = False
+    if method == "GET":
+        json_flag = False
+
     if json_flag == True:
         parameters_in_json = headers_and_cookies[len(headers_and_cookies) - 1].lstrip().rstrip()
         del(headers_and_cookies[len(headers_and_cookies) - 1])
@@ -50,16 +68,20 @@ def data_parser(path_to_file, url_form_user, threads, json_flag, proxy):
         h_and_c(headers_and_cookies)
         length = check_request(headers, cookies, method, full_url, parameters_in_json, json_flag, proxy)
         
-        jsonn = json.loads(parameters_in_json)
+        parameters_in_json_with_start = parameters_in_json
+        parameters_in_json = parameters_in_json.replace("*", "")
+
+        jsonn = json.loads(parameters_in_json) 
+
         mass_parameters = []
         for line in jsonn:
-            mass_parameters.append(str(line) + "=" + jsonn['{}'.format(line)])
+            mass_parameters.append(str(line) + "=" + str(jsonn['{}'.format(line)]))
 
         for param in mass_parameters:
             payloads_queue.put(param.strip())
 
         for line in range(threads):
-            th = threading.Thread(target = fuzzer, args = (method, full_url, parameters_in_json, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy))
+            th = threading.Thread(target = function, args = (method, full_url, parameters_in_json, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy, payloads_file, parameters_in_json_with_start))
             th.start()
             
     elif json_flag == False:
@@ -80,10 +102,16 @@ def data_parser(path_to_file, url_form_user, threads, json_flag, proxy):
             payloads_queue.put(line.strip())
 
         for line in range(threads):
-            th = threading.Thread(target = fuzzer, args = (method, url, str_parameters, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy))
+            th = threading.Thread(target = function, args = (method, url, str_parameters, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy, payloads_file, "Empty"))
             th.start()
 
-def data_parser_without_file(url, data, threads, proxy, json_flag, h, c):
+def data_parser_without_file(url, data, threads, proxy, h, c, payloads_file):
+    if payloads_file == None:
+        function = fuzzer
+    if payloads_file != None:
+        check_file(payloads_file, "--payloads")
+        function = fuzzer_user_payloads
+
     if h != None:
         h_mass = h.split(',')
 
@@ -106,23 +134,34 @@ def data_parser_without_file(url, data, threads, proxy, json_flag, h, c):
                 pass
                 continue
 
+    if data != None:
+        if data.strip()[0] == "{" and data.strip()[int(len(data.strip())-1)] == "}":
+            json_flag = True
+        else:
+            json_flag = False
+    if data == None:
+        json_flag = False
+
     if json_flag == True:
         method = 'POST'
         full_url = url
         parameters_in_json = data
 
         length = check_request(headers, cookies, method, full_url, parameters_in_json, json_flag, proxy)
-        
+
+        parameters_in_json_with_start = parameters_in_json
+        parameters_in_json = parameters_in_json.replace("*", "")
+
         jsonn = json.loads(parameters_in_json)
         mass_parameters = []
         for line in jsonn:
-            mass_parameters.append(str(line) + "=" + jsonn['{}'.format(line)])
+            mass_parameters.append(str(line) + "=" + str(jsonn['{}'.format(line)]))
 
         for param in mass_parameters:
             payloads_queue.put(param.strip())
         
         for line in range(threads):
-            th = threading.Thread(target = fuzzer, args = (method, full_url, parameters_in_json, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy))
+            th = threading.Thread(target = function, args = (method, full_url, parameters_in_json, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy, payloads_file, parameters_in_json_with_start))
             th.start()
 
     elif json_flag == False:
@@ -144,5 +183,5 @@ def data_parser_without_file(url, data, threads, proxy, json_flag, h, c):
             payloads_queue.put(line.strip())
 
         for line in range(threads):
-            th = threading.Thread(target = fuzzer, args = (method, url, str_parameters, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy))
+            th = threading.Thread(target = function, args = (method, url, str_parameters, mass_parameters, length, json_flag, cookies, headers, payloads_queue, proxy, payloads_file, "Empty"))
             th.start()

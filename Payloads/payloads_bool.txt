@@ -1,4 +1,8 @@
-key=EMPTYvalueFalse
-key=EMPTYvalueTrue
+key=EMPTYvaluefalse
+key=EMPTYvaluetrue
 key=EMPTYvalue0
 key=EMPTYvalue1
+key=EMPTYvalue%00
+key[]=value
+key=value;
+key=value'

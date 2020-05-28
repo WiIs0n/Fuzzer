@@ -38,24 +38,29 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(add_help = True, formatter_class = argparse.RawDescriptionHelpFormatter, epilog = """examples:
     If your request in file:
         python3 Fuzzer.py --file ~/Desktop/request.txt --thread 3 --url "https://example.com"
-        python3 Fuzzer.py --file ~/Desktop/request.txt --thread 3 --url "https://example.com" --json
+        python3 Fuzzer.py --file ~/Desktop/request.txt --thread 3 --url "https://example.com"
 
     Without file:
         python3 Fuzzer.py --url "https://example.com?param1=123&param2=True"
+        python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --payloads ~/Desktop/payloads.txt
         python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --proxy 111.222.333.444:8787
         python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --data "param1=True&param2=1234" --burp 127.0.0.1:8080
-        python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --data '{"param1":1234, "param2":True, "param3":"ololo"}' --json
+        python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --data '{"param1":1234, "param2":True, "param3":"ololo"}'
         python3 Fuzzer.py --url "https://example.com?param1=123&param2=True" --headers "Header_1: value_1, Header_2: value_2" --cookies "PHPSESSID_1=value_1"
+    
+    If you use the --payloads flag, you must specify the option whitch you fuzzing:
+    * - add payload where there is an asterisk. (par=123* -> par=123PAYLOAD)
+    ** - using a double asterisk you can replace the parameter value with payload. (par=123** -> par=PAYLOAD)
     """)
     parser.add_argument('--url', type = str, help = 'Input URL address in quotes', required=True)
     parser.add_argument('--data', type = str, help = 'Input POST parameters in quotes')
     parser.add_argument('--file', type = str, help = 'Input path to your file with request from Burp Suite')
     parser.add_argument('--threads', type = int, help = 'Input number of threads')
-    parser.add_argument('--json', action = 'store_true', help = 'Use this flag if your POST parameters in JSON format')
     parser.add_argument('--proxy', type = str, help = "Input ip:port your proxy server")
     parser.add_argument('--burp', type = str, help = "Input ip:port your Burp Suite proxy")
     parser.add_argument('--headers', type = str, help = "Input your headers in quotes (\"Header_1: value_1, Header_2: value_2\")")
     parser.add_argument('--cookies', type = str, help = "Input your cookies in quotes (\"PHPSESSID_1=value_1; PHPSESSID_2=value_2\")")
+    parser.add_argument('--payloads', type = str, help = "Input path to your file with user payloads")
     args = parser.parse_args()
 
 
@@ -80,6 +85,6 @@ if __name__ == '__main__':
             print("{}Input URL address in format https://example.com{}".format(fg(1), attr(0))) 
             exit()
         else:
-            data_parser(args.file, args.url, threads, args.json, proxy)
+            data_parser(args.file, args.url, threads, proxy, args.payloads)
     else:
-        data_parser_without_file(args.url, args.data, threads, proxy, args.json, args.headers, args.cookies)
+        data_parser_without_file(args.url, args.data, threads, proxy, args.headers, args.cookies, args.payloads)
