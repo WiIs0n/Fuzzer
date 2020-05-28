@@ -40,7 +40,7 @@ The program sends requests with different payloads and displays a message if the
   --burp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag for get result in Burp. Input ip:port your Burp Suite proxy  
   --proxy&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag for requests through proxy server. Input ip:port your proxy server  
   --file&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag for send path to your file with  full request from Burp Suite   
-  --payloads&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag for send path to your file with user payloads
+  --payloads&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Use this flag for send path to your file with user payloads
 
 __For fuzzing GET parameters use the following commands:__  
 
@@ -71,8 +71,8 @@ __For fuzzing parameters from file with user payloads:__
 `python3 Fuzzer.py --url "https://example.com" --data 'param1=1234&param2=ololo*' --payloads "/home/payloads.txt"`
  
 If you use the --payloads flag, you must specify the option whitch you fuzzing:
-* - add payload where there is an asterisk. (par=123* -> par=123PAYLOAD)
-** - using a double asterisk you can replace the parameter value with payload. (par=123** -> par=PAYLOAD)
+\* - add payload where there is an asterisk. (par=123* -> par=123PAYLOAD)
+\*\* - using a double asterisk you can replace the parameter value with payload. (par=123** -> par=PAYLOAD)
 
 __For fuzzing POST parameters in JSON format from file with request use the following commands:__  
 
