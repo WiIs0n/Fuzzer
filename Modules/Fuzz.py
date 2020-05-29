@@ -22,9 +22,13 @@ def fuzzer(method, url, str_parameters, mass_parameters, length, json_flag, cook
 
 			if json_flag == True:			
 				
+				if parameter.find("None") != -1:
+					parameter = parameter.replace("None", "null")
+
 				data_type = check_type(parameter)
 				if data_type == "bool":
 					parameter = parameter.replace("False", "false").replace("True", "true")
+
 				param_key_value = parameter.split('=', 1)
 				mass_with_templates = 'payloads_mass_{}'.format(data_type)
 
@@ -102,6 +106,8 @@ def check_type(parameter):
 		return form
 
 	return re.search("\<class \'([a-z]+)\'\>", str(form)).group(1)
+
+
 
 def search_payload(template, params_with_payload, val, json_flag, param_key_value):
 	if json_flag == True:

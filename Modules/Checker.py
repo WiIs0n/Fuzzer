@@ -43,10 +43,11 @@ def check_request(headers, cookies, method, url, str_parameters, json_flag, prox
 		return len(req.content)
 	else:
 		print("~~~~~~~~~~ {}Current state{} ~~~~~~~~~~".format(fg(220), attr(0)))
-		print("{}[-]{} Problem with request. Status code: {}{}{}".format(fg(1), attr(0), fg(1), req.status_code, attr(0)))
+		print("{}[-]{} There may be problems with the request. Status code: {}{}{}".format(fg(1), attr(0), fg(1), req.status_code, attr(0)))
 		print("{}[+]{} Responce content length: {}{}{}".format(fg(2), attr(0), fg(2), len(req.content), attr(0)))
 		print("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-		exit()
+		
+		return len(req.content)
 
 def check_file(path, type_of_path):
 	if os.path.isfile(path) == False:
