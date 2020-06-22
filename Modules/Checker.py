@@ -15,7 +15,7 @@ def check_request(headers, cookies, method, url, str_parameters, json_flag, prox
 	if json_flag == True:
 		json_params = json.dumps(str_parameters)
 		try:
-			req = requests.request(method = method, url = url, cookies = cookies, headers = headers, data = json.loads(json_params), proxies = proxy, verify = False)
+			req = requests.request(method = method, url = url, cookies = cookies, headers = headers, data = json.loads(json_params), proxies = proxy, verify = False, allow_redirects = False)
 		except Exception as error:
 			pass
 			print("{}Error in current request to {}:{} {}".format(fg(1), url, attr(0), error))
@@ -28,7 +28,7 @@ def check_request(headers, cookies, method, url, str_parameters, json_flag, prox
 			str_post_params = str_parameters
 
 		try:
-			req = requests.request(method = method, url = url, cookies = cookies, headers = headers, data = str_post_params, proxies = proxy, verify = False)
+			req = requests.request(method = method, url = url, cookies = cookies, headers = headers, data = str_post_params, proxies = proxy, verify = False, allow_redirects = False)
 		except Exception as error:
 			pass
 			print("{}Error in current request to {}:{} {}".format(fg(1), url, attr(0), error))
